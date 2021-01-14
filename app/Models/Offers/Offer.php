@@ -54,7 +54,7 @@ class Offer extends Model
             case 'user_id':
                 return $this->{$name};
             case 'user':
-                return $this->getCianUser();
+                return $this->getUser();
 //            case 'photos':
 //                return $this->getPhotos();
 //            case 'phones':
@@ -69,7 +69,7 @@ class Offer extends Model
         return 'offers';
     }
 
-    public function getCianUser(): ?User
+    public function getUser(): ?User
     {
         return User::getById($this->user_id);
     }
@@ -98,12 +98,25 @@ class Offer extends Model
      */
     protected function insert(array $mappedProperties): void
     {
-        if (isset($mappedProperties['user']) && $mappedProperties['user'] instanceof User){
-            $cianUser = $mappedProperties['user']->save();
-            $mappedProperties['user_id'] = $cianUser->id;
-            unset($mappedProperties['user']);
+        $relations = [
+            'user' => $mappedProperties['user'],
+            'phones' => $mappedProperties['phones'],
+            //'photos' => $mappedProperties['photos'],
+        ];
+        foreach ($relations as $relation) unset($mappedProperties[$relation]);
+
+        if (isset($relations['user']) && $relations['user'] instanceof User){
+            $user = $relations['user']->save();
+            $relations['user_id'] = $user->id;
         }
 
         parent::insert($mappedProperties); // @todo не сохранять полные копии
+
+        foreach ($relations['phones'] as $phoneNumber){
+            Phones::create([
+                'number' => $phoneNumber,
+                'offer_id' => isset($this->id) && $this->id ? $this->id : null
+            ])->save(); // @todo если уже есть, то мб просто обновить offer_id. А если телефон привязан ко множесту обьявлений??????????
+        }
     }
 }

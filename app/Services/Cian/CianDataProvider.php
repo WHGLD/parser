@@ -32,6 +32,9 @@ class CianDataProvider implements DataProviderInterface
             throw new \Exception('Cian data is parsed today');
         } else {
             if ($cache){ // если есть кэш, то проверим есть ли какие обновления в данных
+
+                return json_decode($cache); // теперь запускам чз форсе с данными из кэша
+
                 $freshData = $this->curlRequest();
                 if (json_decode($cache) === $freshData) {
                     throw new \Exception('Nothing to update');

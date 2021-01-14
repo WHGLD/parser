@@ -72,7 +72,7 @@ abstract class Model
      */
     public function save(): self
     {
-        $mappedProperties = $this->mapPropertiesToDbFormat();
+        $mappedProperties = $this->mapPropertiesToDbFormat(); // @todo + проверка на уникальность записи должна быть где-то тут, мб создать before save
         if ($this->id !== null) {
             $this->update($mappedProperties);
         } else {

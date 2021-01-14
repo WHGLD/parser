@@ -30,7 +30,7 @@ class CianDataHandler implements DataHandlerInterface
                 'external_id' => (int)$dataItem->cianId,
                 'external_type' => Offer::EXTERNAL_TYPE_CIAN,
                 'url' => (string)$dataItem->fullUrl,
-                // 'phones' => isset($dataItem->phones) ? $this->phoneHandler($dataItem->phones) : [], // @todo
+                'phones' => isset($dataItem->phones) ? $this->phoneHandler($dataItem->phones) : [],
                 'address' => (string)$this->addressHandler($dataItem),
                 'floor' => (int)$dataItem->floorNumber,
 
