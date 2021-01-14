@@ -27,14 +27,13 @@ class CianParseCommand extends Command
         $this->forceUpdate = $this->getParam('forceUpdate');
     }
 
-    public function execute()
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function execute(): void
     {
-        try {
-            $data = $this->dataProvider->queryData($this->forceUpdate);
-        } catch (\Exception $exception){
-            echo $exception;
-            return false;
-        }
+        $data = $this->dataProvider->queryData($this->forceUpdate);
 
         $offersArr = $this->dataHandler->process($data);
 
@@ -43,6 +42,6 @@ class CianParseCommand extends Command
             echo "\rOffer сохранен, id:". $offer->id;
         }
 
-        echo "\nГотово!". PHP_EOL;
+        echo "\nГотово!". PHP_EOL; // @todo сколько сохранили записей
     }
 }

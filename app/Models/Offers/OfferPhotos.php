@@ -6,7 +6,7 @@ use Models\Model;
 
 class OfferPhotos extends Model
 {
-    protected $photo_cian_id;
+    protected $photo_external_id;
     protected $offer_id;
 
     public function __get($name)
@@ -14,7 +14,7 @@ class OfferPhotos extends Model
         switch ($name) {
             case 'id':
             case 'offer_id':
-            case 'photo_cian_id':
+            case 'photo_external_id':
                 return $this->{$name};
             default:
                 return null;

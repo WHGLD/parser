@@ -1,14 +1,13 @@
 <?php
 
-namespace Models\CianUsers;
+namespace Models\Users;
 
 use Models\Model;
 use Models\Phones\Phones;
 
-class CianUser extends Model
+class User extends Model
 {
-    protected $cian_id;
-    protected $published_id;
+    protected $external_id;
     protected $agency_name;
     protected $company_name;
     protected $is_agent;
@@ -19,8 +18,7 @@ class CianUser extends Model
     {
         switch ($name) {
             case 'id':
-            case 'cian_id':
-            case 'published_id':
+            case 'external_id':
             case 'agency_name':
             case 'company_name':
             case 'is_agent':
@@ -34,7 +32,7 @@ class CianUser extends Model
 
     protected static function getTableName(): string
     {
-        return 'cian_users';
+        return 'users';
     }
 
 //    public function getPhones()
@@ -47,7 +45,7 @@ class CianUser extends Model
      */
     protected function insert(array $mappedProperties): void
     {
-        $isUserExists = self::getByField('cian_id', $mappedProperties['cian_id']);
+        $isUserExists = self::getByField('external_id', $mappedProperties['external_id']);
 
         if (!$isUserExists){
             parent::insert($mappedProperties);

@@ -20,5 +20,9 @@ foreach ($argv as $argument) {
     }
 }
 
-$class = new $className($params);
-$class->execute();
+try {
+    $class = new $className($params);
+    $class->execute();
+} catch (\Exception $exception){
+    echo $exception;
+}

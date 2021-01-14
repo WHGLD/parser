@@ -2,7 +2,7 @@
 
 namespace Services\Cian;
 
-use Models\CianUsers\CianUser;
+use Models\Users\User;
 use Models\Offers\Offer;
 use Services\DataHandlerInterface;
 
@@ -17,9 +17,8 @@ class CianDataHandler implements DataHandlerInterface
     public function process(array $data): array
     {
         foreach ($data as $dataItem){
-            $cianUser = CianUser::create([
-                'cian_id' => (int)$dataItem->cianUserId, // id пользака на сайте cian
-                'published_id' => (int)$dataItem->publishedUserId, // мб это id пользака зареганного чз соц сети
+            $cianUser = User::create([
+                'external_id' => (int)$dataItem->cianUserId, // id пользака на сайте cian
                 'agency_name' => isset($dataItem->user->agencyName) ? (string)$dataItem->user->agencyName : null,
                 'company_name' => isset($dataItem->user->companyName) ? (string)$dataItem->user->companyName : null,
                 'is_agent' => (int)$dataItem->user->isAgent,
@@ -28,7 +27,8 @@ class CianDataHandler implements DataHandlerInterface
 
             $this->offersArr[] = Offer::create([
                 # общие данные
-                'cian_id' => (int)$dataItem->cianId,
+                'external_id' => (int)$dataItem->cianId,
+                'external_type' => Offer::EXTERNAL_TYPE_CIAN,
                 'url' => (string)$dataItem->fullUrl,
                 // 'phones' => isset($dataItem->phones) ? $this->phoneHandler($dataItem->phones) : [], // @todo
                 'address' => (string)$this->addressHandler($dataItem),
@@ -50,7 +50,7 @@ class CianDataHandler implements DataHandlerInterface
                 'is_new' => (int)$dataItem->isNew,
 
                 # пользак, что связан с обьявой
-                'cian_user' => $cianUser,
+                'user' => $cianUser,
 
                 //'photos' => $this->photoHandler() // @todo
             ]);

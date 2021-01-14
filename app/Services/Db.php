@@ -11,7 +11,7 @@ class Db
 
     private function __construct()
     {
-        $this->pdo = new \PDO('sqlite:../../database/cian-parser.db');
+        $this->pdo = new \PDO('sqlite:../../database/parser.db');
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 

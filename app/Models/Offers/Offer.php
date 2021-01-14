@@ -2,14 +2,18 @@
 
 namespace Models\Offers;
 
-use Models\CianUsers\CianUser;
+use Models\Users\User;
 use Models\Model;
 use Models\Phones\Phones;
 use Services\Db;
 
 class Offer extends Model
 {
-    protected $cian_id;
+    CONST EXTERNAL_TYPE_DEFAULT = 0;
+    CONST EXTERNAL_TYPE_CIAN = 1;
+
+    protected $external_id;
+    protected $external_type;
     protected $url;
     protected $address;
     protected $floor;
@@ -19,13 +23,13 @@ class Offer extends Model
     protected $deposit;
     protected $is_imported;
     protected $is_new;
-    protected $cian_user_id;
+    protected $user_id;
 
     protected $updated_date;
     protected $created_date;
     protected $parsed_date;
 
-    protected $cian_user;
+    protected $user;
     protected $photos;
     protected $phones;
 
@@ -33,7 +37,8 @@ class Offer extends Model
     {
         switch ($name) {
             case 'id':
-            case 'cian_id':
+            case 'external_id':
+            case 'external_type':
             case 'url':
             case 'address':
             case 'floor':
@@ -46,9 +51,9 @@ class Offer extends Model
             case 'parsed_date':
             case 'is_imported':
             case 'is_new':
-            case 'cian_user_id':
+            case 'user_id':
                 return $this->{$name};
-            case 'cian_user':
+            case 'user':
                 return $this->getCianUser();
 //            case 'photos':
 //                return $this->getPhotos();
@@ -64,9 +69,9 @@ class Offer extends Model
         return 'offers';
     }
 
-    public function getCianUser(): ?CianUser
+    public function getCianUser(): ?User
     {
-        return CianUser::getById($this->cian_user_id);
+        return User::getById($this->user_id);
     }
 
 //    public function getPhotos(): ?array
@@ -93,10 +98,10 @@ class Offer extends Model
      */
     protected function insert(array $mappedProperties): void
     {
-        if (isset($mappedProperties['cian_user']) && $mappedProperties['cian_user'] instanceof CianUser){
-            $cianUser = $mappedProperties['cian_user']->save();
-            $mappedProperties['cian_user_id'] = $cianUser->id;
-            unset($mappedProperties['cian_user']);
+        if (isset($mappedProperties['user']) && $mappedProperties['user'] instanceof User){
+            $cianUser = $mappedProperties['user']->save();
+            $mappedProperties['user_id'] = $cianUser->id;
+            unset($mappedProperties['user']);
         }
 
         parent::insert($mappedProperties); // @todo не сохранять полные копии

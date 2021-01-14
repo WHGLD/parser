@@ -8,7 +8,7 @@ class Phones extends Model
 {
     protected $number;
     protected $offer_id;
-    protected $cian_user_id;
+    protected $user_id;
 
     public function __get($name)
     {
@@ -16,7 +16,7 @@ class Phones extends Model
             case 'id':
             case 'number':
             case 'offer_id':
-            case 'cian_user_id':
+            case 'user_id':
                 return $this->{$name};
             default:
                 return null;
