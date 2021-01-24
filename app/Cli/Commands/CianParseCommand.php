@@ -39,7 +39,6 @@ class CianParseCommand extends Command
 
         foreach ($offersArr as $offer){
             $offer->save();
-            exit;
             echo "\rOffer сохранен, id:". $offer->id;
         }
 
